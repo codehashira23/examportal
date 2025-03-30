@@ -1,6 +1,7 @@
 import { dbConnect } from "../../../../lib/dbConnet";
 import User from "../../../model/User";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";  // ✅ Import bcrypt
 
 export async function POST(req) {
   try {
@@ -23,7 +24,9 @@ export async function POST(req) {
       });
     }
 
-    if (user.password !== password) {
+    // ✅ Compare plain text password with hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return new Response(JSON.stringify({ message: "Invalid password" }), { 
         status: 401,
         headers: { "Content-Type": "application/json" }
