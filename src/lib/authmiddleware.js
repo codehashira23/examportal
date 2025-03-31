@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { dbConnect } from "./dbConnet";
+import { dbConnect } from "./dbConnect";
 import User from "../app/model/User";
 import jwt from "jsonwebtoken";
 

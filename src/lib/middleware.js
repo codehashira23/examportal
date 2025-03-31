@@ -1,4 +1,4 @@
-import { dbConnect } from "./dbConnet";
+import { dbConnect } from "./dbConnect";
 import User from "../app/model/User";
 
 export async function authMiddleware(email) {
