@@ -1,4 +1,4 @@
-import { dbConnect } from "../../../../lib/dbConnet";
+import { dbConnect } from "../../../../lib/dbConnect";           
 import User from "../../../model/User";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";  // ✅ Import bcrypt

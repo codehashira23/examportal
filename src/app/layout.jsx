@@ -16,17 +16,6 @@ export const metadata = {
   description: "exams for fun",
 };
 
-// export default function RootLayout({ children }) {
-//   return (
-//     <html lang="en">
-//       <body
-//         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-//       >
-//         {children}
-//       </body>
-//     </html>
-//   );
-// }
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

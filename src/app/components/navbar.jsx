@@ -18,17 +18,17 @@ export default function Navbar({ role }) {
             <>
               <li><Link href="/admin/dashboard" className="hover:text-gray-200 transition">Dashboard</Link></li>
               <li><Link href="/admin/exams" className="hover:text-gray-200 transition">Manage Exams</Link></li>
-              <li><Link href="/admin/results" className="hover:text-gray-200 transition">Results</Link></li>
+              <li><Link href="/admin/results" className="hover:text-gray-200 transition">Exam Results</Link></li>
               <li><Link href="/admin/monitoring" className="hover:text-gray-200 transition">Monitoring</Link></li>
-              <li><Link href="/admin/reports" className="hover:text-gray-200 transition">Reports</Link></li>
-              <li><Link href="/admin/users" className="hover:text-gray-200 transition">Students</Link></li>
+              {/* <li><Link href="/admin/reports" className="hover:text-gray-200 transition">Reports</Link></li> */}
+              <li><Link href="/admin/users" className="hover:text-gray-200 transition">Manage Users</Link></li>
             </>
           ) : (
             <>
               <li><Link href="/student/dashboard" className="hover:text-gray-200 transition">Dashboard</Link></li>
               <li><Link href="/student/exams" className="hover:text-gray-200 transition">Available Exams</Link></li>
               <li><Link href="/student/results" className="hover:text-gray-200 transition">Exam Results</Link></li>
-              <li><Link href="/student/submission" className="hover:text-gray-200 transition">Submissions</Link></li>
+              {/* <li><Link href="/student/submission" className="hover:text-gray-200 transition">Submissions</Link></li> */}
               <li><Link href="/student/profile" className="hover:text-gray-200 transition">Profile</Link></li>
             </>
           )}
