@@ -2,6 +2,12 @@
 
 Hey there! 👋 Welcome to ExamPortal, a super cool Next.js application for conducting online exams. Let's get you started! 🚀
 
+## dev team
+rambhadra 
+divyansh 
+dinesh 
+sriya 
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14 (App Router) + Tailwind CSS 
