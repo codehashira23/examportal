@@ -360,18 +360,6 @@ export default function TakeExam({ params }) {
           </div>
         </div>
       )}
-
-      {/* Add a display for current answers (for debugging) */}
-      <div className="mt-4 p-4 bg-gray-100 rounded">
-        <h3>Debug Info:</h3>
-        <pre className="text-sm">
-          {JSON.stringify({
-            examId,
-            selectedAnswers: answers,
-            questionCount: exam?.questions?.length || 0
-          }, null, 2)}
-        </pre>
-      </div>
     </div>
   );
 }

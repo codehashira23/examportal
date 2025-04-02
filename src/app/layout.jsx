@@ -1,5 +1,13 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ensureUploadDirectories } from "./lib/upload-helper";
+
+// Ensure uploads directory exists
+try {
+  ensureUploadDirectories();
+} catch (error) {
+  console.error("Failed to create upload directories:", error);
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -14,6 +14,7 @@ export default function StudentProfile() {
     profileImage: null
   });
   const [previewImage, setPreviewImage] = useState('');
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     fetchUserProfile();
@@ -21,6 +22,7 @@ export default function StudentProfile() {
 
   const fetchUserProfile = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/student/profile');
       const data = await response.json();
       
@@ -31,7 +33,10 @@ export default function StudentProfile() {
           email: data.email,
           profileImage: null
         });
-        setPreviewImage(data.profileImage || '/default-avatar.png');
+        
+        // Set preview image with fallback and cache-busting
+        const imageUrl = data.profileImage ? `${data.profileImage}?t=${new Date().getTime()}` : '/default-avatar.png';
+        setPreviewImage(imageUrl);
       } else {
         setError(data.error || 'Failed to fetch profile');
       }
@@ -55,6 +60,7 @@ export default function StudentProfile() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
+        setImageError(false);
       };
       reader.readAsDataURL(file);
     }
@@ -77,9 +83,23 @@ export default function StudentProfile() {
       const data = await response.json();
       
       if (response.ok) {
+        // Update user data with the response
         setUser(data);
+        
+        // Update preview with cache busting
+        if (data.profileImage) {
+          setPreviewImage(`${data.profileImage}?t=${new Date().getTime()}`);
+        }
+        
         setIsEditing(false);
         setError('');
+        
+        // Update profile image in localStorage if used
+        if (typeof window !== 'undefined') {
+          const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+          userData.profileImage = data.profileImage;
+          localStorage.setItem('userData', JSON.stringify(userData));
+        }
       } else {
         setError(data.error || 'Failed to update profile');
         // Log the error for debugging
@@ -134,6 +154,12 @@ export default function StudentProfile() {
                   alt="Profile"
                   fill
                   className="rounded-full object-cover"
+                  onError={() => {
+                    setImageError(true);
+                    setPreviewImage('/default-avatar.png');
+                  }}
+                  priority
+                  unoptimized={true}
                 />
               </div>
               {isEditing && (

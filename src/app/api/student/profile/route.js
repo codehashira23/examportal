@@ -4,7 +4,7 @@ import User from '../../../model/User';
 import { getSessionUser } from '../../../../lib/authmiddleware';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
-import { mkdir } from 'fs/promises';
+import { ensureUploadDirectories, getUploadPath } from '../../../lib/upload-helper';
 
 export async function GET() {
   try {
@@ -88,13 +88,13 @@ export async function PUT(request) {
         const buffer = Buffer.from(bytes);
 
         // Ensure uploads directory exists
-        const uploadDir = join(process.cwd(), 'public/uploads/profiles');
-        await mkdir(uploadDir, { recursive: true });
+        await ensureUploadDirectories();
+        const uploadDir = getUploadPath();
 
         // Create unique filename with original extension
         const fileExt = profileImage.name.split('.').pop();
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-        const filename = `${uniqueSuffix}.${fileExt}`;
+        const filename = `${user._id.toString()}-${uniqueSuffix}.${fileExt}`;
         const path = join(uploadDir, filename);
 
         // Save file

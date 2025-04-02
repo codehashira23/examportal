@@ -34,14 +34,28 @@ export async function POST(req) {
     }
 
     const token = jwt.sign(
-      { id: user._id, role: user.role }, 
+      { 
+        id: user._id, 
+        role: user.role,
+        profileImage: user.profileImage || null 
+      }, 
       process.env.JWT_SECRET, 
-      { expiresIn: "1h" }
+      { expiresIn: "7d" }
     );
+
+    // Create user object without sensitive data
+    const userData = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      profileImage: user.profileImage || null
+    };
 
     return new Response(
       JSON.stringify({ 
         token, 
+        user: userData,
         role: user.role,
         message: "Login successful" 
       }), 
@@ -49,7 +63,7 @@ export async function POST(req) {
         status: 200,
         headers: {
           "Content-Type": "application/json",
-          "Set-Cookie": `token=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=3600`
+          "Set-Cookie": `token=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`
         }
       }
     );

@@ -5,14 +5,31 @@ import Exam from '../../../model/Exam';
 // GET /api/admin/exams - List all exams
 export async function GET() {
   try {
+    console.log('Fetching all exams for admin');
     await dbConnect();
-    const exams = await Exam.find({}).sort({ createdAt: -1 });
+    console.log('Database connected');
     
-    return NextResponse.json({ exams });
+    const exams = await Exam.find({}).sort({ createdAt: -1 });
+    console.log(`Found ${exams.length} exams`);
+    
+    // Ensure consistent data format for exams
+    const formattedExams = exams.map(exam => {
+      const examObj = exam.toObject();
+      console.log(`Exam ${exam._id} scheduled status:`, exam.scheduled);
+      
+      return {
+        ...examObj,
+        scheduled: typeof exam.scheduled === 'boolean' ? exam.scheduled : false,
+        scheduledAt: exam.scheduledAt || null
+      };
+    });
+    
+    console.log('Returning formatted exams to admin');
+    return NextResponse.json({ exams: formattedExams });
   } catch (error) {
     console.error('Error fetching exams:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch exams' },
+      { error: 'Failed to fetch exams', details: error.message },
       { status: 500 }
     );
   }

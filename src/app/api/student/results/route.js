@@ -5,36 +5,57 @@ import Result from '../../../model/Result';
 
 export async function GET() {
   try {
+    console.log('Fetching results for student');
     await dbConnect();
     const user = await getSessionUser();
 
     if (!user) {
+      console.log('Unauthorized access attempt to student results');
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
+    
+    console.log(`Fetching results for student ${user._id}`);
 
     // Fetch results and populate exam details
     const results = await Result.find({ studentId: user._id })
       .populate('examId', 'title subject maxMarks')
       .sort({ submittedAt: -1 });
 
+    console.log(`Found ${results.length} results for student`);
+
     // Filter out results with missing exam references
     const validResults = results.filter(result => result.examId);
 
     // Format results consistently
-    const formattedResults = validResults.map(result => ({
-      _id: result._id,
-      examId: {
-        _id: result.examId._id,
-        title: result.examId.title,
-        subject: result.examId.subject,
-        maxMarks: result.examId.maxMarks
-      },
-      score: result.score,
-      percentage: result.percentage,
-      status: result.status,
-      submittedAt: result.submittedAt,
-      createdAt: result.createdAt
-    }));
+    const formattedResults = validResults.map(result => {
+      // Ensure maxMarks is available, default to 100 if missing
+      const maxMarks = result.examId?.maxMarks || 100;
+      
+      // Ensure score is a number
+      const score = Number(result.score) || 0;
+      
+      // Calculate percentage (0-100 scale)
+      const percentage = maxMarks > 0 ? Math.round((score / maxMarks) * 100) : 0;
+      
+      // Determine pass/fail status (typically 40% is passing)
+      const passingThreshold = 40; // Can be adjusted based on requirements
+      const status = percentage >= passingThreshold ? 'passed' : 'failed';
+      
+      return {
+        _id: result._id,
+        examId: {
+          _id: result.examId._id,
+          title: result.examId.title,
+          subject: result.examId.subject,
+          maxMarks: maxMarks
+        },
+        score: score,
+        percentage: percentage,
+        status: status,
+        submittedAt: result.submittedAt,
+        createdAt: result.createdAt
+      };
+    });
 
     // Log warning if there are orphaned results
     if (validResults.length < results.length) {
@@ -43,6 +64,7 @@ export async function GET() {
       // await Result.deleteMany({ _id: { $nin: validResults.map(r => r._id) } });
     }
 
+    console.log('Returning formatted student results');
     return NextResponse.json(formattedResults);
   } catch (error) {
     console.error('Error fetching results:', error);
