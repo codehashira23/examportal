@@ -1,12 +1,20 @@
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
+import Image from "next/image";
 
 export default function Navbar({ role }) {
   return (
     <nav className="bg-green-700 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo / Home Link */}
-        <Link href="/">
+        <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src="/logo.png"
+            alt="Exam Portal Logo"
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
           <span className="text-2xl font-bold tracking-wide hover:text-gray-200 transition">
             Exam Portal
           </span>
