@@ -76,7 +76,7 @@ export default function AdminDashboard() {
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Average Performance</CardTitle>
+            <CardTitle className="text-sm font-medium">Average class Performance</CardTitle>
             <BarChart2 className="h-4 w-4 text-gray-500" />
           </CardHeader>
           <CardContent>

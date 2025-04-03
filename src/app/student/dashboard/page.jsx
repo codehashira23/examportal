@@ -78,7 +78,7 @@ export default function StudentDashboard() {
       {/* Welcome Section */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Welcome, {user?.name || 'Student'}!
+        Happy to have you onboard {user?.name || 'Student'}!
         </h1>
         <p className="text-gray-600">
           You have attempted {recentExams.length} exams so far.

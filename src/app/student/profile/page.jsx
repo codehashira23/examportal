@@ -15,6 +15,7 @@ export default function StudentProfile() {
   });
   const [previewImage, setPreviewImage] = useState('');
   const [imageError, setImageError] = useState(false);
+  
 
   useEffect(() => {
     fetchUserProfile();

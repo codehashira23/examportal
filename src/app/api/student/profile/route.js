@@ -4,7 +4,7 @@ import User from '../../../model/User';
 import { getSessionUser } from '../../../../lib/authmiddleware';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
-import { ensureUploadDirectories, getUploadPath } from '../../../lib/upload-helper';
+import { ensureUploadDirectories, getUploadPath } from '../../../../lib/upload-helper';
 
 export async function GET() {
   try {

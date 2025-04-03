@@ -57,25 +57,31 @@ export async function POST(request) {
     console.log('User answers:', answers);
 
     // Process each question
-    exam.questions.forEach((question) => {
-      const userAnswer = answers[question._id.toString()];
+    exam.questions.forEach((question, index) => {
+      // Since your submitted answers have IDs that don't match the questions in the database,
+      // we'll match by position in the array instead
+      const answerKeys = Object.keys(answers);
+      const userAnswer = answerKeys.length > index ? answers[answerKeys[index]] : undefined;
       
-      if (userAnswer !== undefined) {
+      console.log('Processing question', index, ':', question.question);
+      console.log('Answer key used:', answerKeys[index], 'User answer:', userAnswer);
+      
+      if (userAnswer !== undefined && userAnswer !== null) {
         const userAnswerNum = parseInt(userAnswer);
         const correctAnswerNum = parseInt(question.correctOption);
         
-        console.log('Answer comparison:', {
-          questionId: question._id,
-          questionText: question.question,
-          userAnswer: userAnswerNum,
-          correctAnswer: correctAnswerNum,
-          marks: question.marks
-        });
-
-        if (userAnswerNum === correctAnswerNum) {
+        console.log('Comparison:', userAnswerNum, 'vs', correctAnswerNum);
+        
+        // Check if it's correct (matching the expected option)
+        if (!isNaN(userAnswerNum) && !isNaN(correctAnswerNum) && userAnswerNum === correctAnswerNum) {
           score += question.marks;
           answeredQuestions++;
+          console.log('Correct! Added marks:', question.marks, 'New total:', score);
+        } else {
+          console.log('Incorrect answer for question', index);
         }
+      } else {
+        console.log('No answer provided for question', index);
       }
     });
 
@@ -97,7 +103,12 @@ export async function POST(request) {
       studentId: user._id,
       userId: user._id,
       examId: examId,
-      answers: answers, // Store as plain object
+      answers: Object.fromEntries(
+        Object.entries(answers).map(([questionId, value]) => [
+          questionId,
+          value.toString()  // Ensure it's a string
+        ])
+      ),
       score: score,
       percentage: percentage,
       status: status,

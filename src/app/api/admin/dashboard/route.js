@@ -20,7 +20,7 @@ export async function GET(request) {
     
     // Calculate average scores by subject
     const subjectScores = {};
-    let totalScore = 0;
+    let totalPercentage = 0;
     let totalResults = 0;
     
     for (const result of results) {
@@ -29,15 +29,16 @@ export async function GET(request) {
         
         if (!subjectScores[subject]) {
           subjectScores[subject] = {
-            total: 0,
+            totalPercentage: 0,
             count: 0
           };
         }
         
-        subjectScores[subject].total += result.score;
+        // Use percentage instead of raw score for better comparison across exams
+        subjectScores[subject].totalPercentage += result.percentage;
         subjectScores[subject].count += 1;
         
-        totalScore += result.score;
+        totalPercentage += result.percentage;
         totalResults += 1;
       }
     }
@@ -45,11 +46,14 @@ export async function GET(request) {
     // Calculate averages
     const averageScores = {};
     for (const subject in subjectScores) {
-      averageScores[subject] = subjectScores[subject].total / subjectScores[subject].count;
+      // Round to 2 decimal places for cleaner display
+      averageScores[subject] = parseFloat((subjectScores[subject].totalPercentage / subjectScores[subject].count).toFixed(2));
     }
     
     // Calculate overall average
-    const overallAverage = totalResults > 0 ? totalScore / totalResults : 0;
+    const overallAverage = totalResults > 0 ? 
+      parseFloat((totalPercentage / totalResults).toFixed(2)) : 
+      0;
     
     // Get recent exams
     const recentExams = await Exam.find()
