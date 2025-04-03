@@ -1,50 +1,138 @@
+"use client"
+
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
-import Image from "next/image";
+import { useState } from "react";
 
 export default function Navbar({ role }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <nav className="bg-green-700 text-white p-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="p-4 dark:bg-gray-800 dark:text-gray-100 bg-green-700 text-white">
+      <div className="container flex justify-between h-16 mx-auto">
         {/* Logo / Home Link */}
-        <Link href="/" className="flex items-center space-x-2">
-          <Image
-            src="/logo.png"
-            alt="Exam Portal Logo"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <span className="text-2xl font-bold tracking-wide hover:text-gray-200 transition">
-            Exam Portal
-          </span>
+        <Link href="/" className="flex items-center p-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 32 32"
+            className="w-8 h-8 dark:text-indigo-400"
+          >
+            <path d="M27.912 7.289l-10.324-5.961c-0.455-0.268-1.002-0.425-1.588-0.425s-1.133 0.158-1.604 0.433l0.015-0.008-10.324 5.961c-0.955 0.561-1.586 1.582-1.588 2.75v11.922c0.002 1.168 0.635 2.189 1.574 2.742l0.016 0.008 10.322 5.961c0.455 0.267 1.004 0.425 1.59 0.425 0.584 0 1.131-0.158 1.602-0.433l-0.014 0.008 10.322-5.961c0.955-0.561 1.586-1.582 1.588-2.75v-11.922c-0.002-1.168-0.633-2.189-1.573-2.742zM27.383 21.961c0 0.389-0.211 0.73-0.526 0.914l-0.004 0.002-10.324 5.961c-0.152 0.088-0.334 0.142-0.53 0.142s-0.377-0.053-0.535-0.145l0.005 0.002-10.324-5.961c-0.319-0.186-0.529-0.527-0.529-0.916v-11.922c0-0.389 0.211-0.73 0.526-0.914l0.004-0.002 10.324-5.961c0.152-0.090 0.334-0.143 0.53-0.143s0.377 0.053 0.535 0.144l-0.006-0.002 10.324 5.961c0.319 0.185 0.529 0.527 0.529 0.916z"></path>
+            <path d="M22.094 19.451h-0.758c-0.188 0-0.363 0.049-0.515 0.135l0.006-0.004-4.574 2.512-5.282-3.049v-6.082l5.282-3.051 4.576 2.504c0.146 0.082 0.323 0.131 0.508 0.131h0.758c0.293 0 0.529-0.239 0.529-0.531v-0.716c0-0.2-0.11-0.373-0.271-0.463l-0.004-0.002-5.078-2.777c-0.293-0.164-0.645-0.26-1.015-0.26-0.39 0-0.756 0.106-1.070 0.289l0.010-0.006-5.281 3.049c-0.636 0.375-1.056 1.055-1.059 1.834v6.082c0 0.779 0.422 1.461 1.049 1.828l0.009 0.006 5.281 3.049c0.305 0.178 0.67 0.284 1.061 0.284 0.373 0 0.723-0.098 1.027-0.265l-0.012 0.006 5.080-2.787c0.166-0.091 0.276-0.265 0.276-0.465v-0.716c0-0.293-0.238-0.529-0.529-0.529z"></path>
+          </svg>
+          <span className="text-2xl font-bold tracking-wide ml-2">Exam Portal</span>
         </Link>
 
-        {/* Navigation Links */}
-        <ul className="flex space-x-6 text-lg font-medium">
+        {/* Navigation Links - Desktop */}
+        <ul className="items-stretch hidden space-x-3 md:flex">
           {role === "admin" ? (
             <>
-              <li><Link href="/admin/dashboard" className="hover:text-gray-200 transition">Dashboard</Link></li>
-              <li><Link href="/admin/exams" className="hover:text-gray-200 transition">Manage Exams</Link></li>
-              <li><Link href="/admin/results" className="hover:text-gray-200 transition">Exam Results</Link></li>
-              <li><Link href="/admin/monitoring" className="hover:text-gray-200 transition">Monitoring</Link></li>
-              {/* <li><Link href="/admin/reports" className="hover:text-gray-200 transition">Reports</Link></li> */}
-              <li><Link href="/admin/users" className="hover:text-gray-200 transition">Manage Users</Link></li>
+              <li className="flex">
+                <Link href="/admin/dashboard" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Dashboard
+                </Link>
+              </li>
+              <li className="flex">
+                <Link href="/admin/exams" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Manage Exams
+                </Link>
+              </li>
+              <li className="flex">
+                <Link href="/admin/results" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Exam Results
+                </Link>
+              </li>
+              <li className="flex">
+                <Link href="/admin/monitoring" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Monitoring
+                </Link>
+              </li>
+              <li className="flex">
+                <Link href="/admin/users" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Manage Users
+                </Link>
+              </li>
             </>
           ) : (
             <>
-              <li><Link href="/student/dashboard" className="hover:text-gray-200 transition">Dashboard</Link></li>
-              <li><Link href="/student/exams" className="hover:text-gray-200 transition">Available Exams</Link></li>
-              <li><Link href="/student/results" className="hover:text-gray-200 transition">Exam Results</Link></li>
-              {/* <li><Link href="/student/submission" className="hover:text-gray-200 transition">Submissions</Link></li> */}
-              <li><Link href="/student/profile" className="hover:text-gray-200 transition">Profile</Link></li>
+              <li className="flex">
+                <Link href="/student/dashboard" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Dashboard
+                </Link>
+              </li>
+              <li className="flex">
+                <Link href="/student/exams" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Available Exams
+                </Link>
+              </li>
+              <li className="flex">
+                <Link href="/student/results" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Exam Results
+                </Link>
+              </li>
+              <li className="flex">
+                <Link href="/student/profile" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent hover:border-white">
+                  Profile
+                </Link>
+              </li>
             </>
           )}
         </ul>
 
-        {/* Logout Button */}
-        <LogoutButton />
+        {/* Mobile Menu Button */}
+        <button 
+          className="flex justify-end p-4 md:hidden"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
+
+        {/* Logout Button - Desktop */}
+        <div className="hidden md:block">
+          <LogoutButton />
+        </div>
       </div>
-    </nav>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden">
+          <ul className="pt-4 pb-3 space-y-2">
+            {role === "admin" ? (
+              <>
+                <li><Link href="/admin/dashboard" className="block px-4 py-2 hover:bg-green-600">Dashboard</Link></li>
+                <li><Link href="/admin/exams" className="block px-4 py-2 hover:bg-green-600">Manage Exams</Link></li>
+                <li><Link href="/admin/results" className="block px-4 py-2 hover:bg-green-600">Exam Results</Link></li>
+                <li><Link href="/admin/monitoring" className="block px-4 py-2 hover:bg-green-600">Monitoring</Link></li>
+                <li><Link href="/admin/users" className="block px-4 py-2 hover:bg-green-600">Manage Users</Link></li>
+              </>
+            ) : (
+              <>
+                <li><Link href="/student/dashboard" className="block px-4 py-2 hover:bg-green-600">Dashboard</Link></li>
+                <li><Link href="/student/exams" className="block px-4 py-2 hover:bg-green-600">Available Exams</Link></li>
+                <li><Link href="/student/results" className="block px-4 py-2 hover:bg-green-600">Exam Results</Link></li>
+                <li><Link href="/student/profile" className="block px-4 py-2 hover:bg-green-600">Profile</Link></li>
+              </>
+            )}
+            <li className="px-4 py-2">
+              <LogoutButton />
+            </li>
+          </ul>
+        </div>
+      )}
+    </header>
   );
 }
