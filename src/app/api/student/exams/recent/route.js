@@ -37,8 +37,9 @@ export async function GET() {
       // Calculate raw score
       const score = result.score || 0;
       
-      // Calculate percentage (moved to frontend)
-      // const percentage = maxMarks > 0 ? Math.round((score / maxMarks) * 100) : 0;
+      // Determine pass/fail status based on 40% threshold
+      const passingThreshold = 0.4; // 40% passing threshold
+      const isPassed = score >= (maxMarks * passingThreshold);
       
       return {
         id: result._id,
@@ -47,8 +48,7 @@ export async function GET() {
         score: score,
         maxMarks: maxMarks,
         dateAttempted: new Date(result.createdAt).toLocaleDateString(),
-        // Let the frontend determine the pass/fail status based on percentage
-        status: score >= (maxMarks * 0.4) ? 'Passed' : 'Failed' // 40% passing threshold
+        status: isPassed ? 'Passed' : 'Failed'
       };
     });
 

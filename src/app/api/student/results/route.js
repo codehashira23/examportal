@@ -34,12 +34,9 @@ export async function GET() {
       // Ensure score is a number
       const score = Number(result.score) || 0;
       
-      // Calculate percentage (0-100 scale)
-      const percentage = maxMarks > 0 ? Math.round((score / maxMarks) * 100) : 0;
-      
       // Determine pass/fail status (typically 40% is passing)
-      const passingThreshold = 40; // Can be adjusted based on requirements
-      const status = percentage >= passingThreshold ? 'passed' : 'failed';
+      const passingThreshold = 0.4; // 40% passing threshold
+      const status = score >= (maxMarks * passingThreshold) ? 'passed' : 'failed';
       
       return {
         _id: result._id,
@@ -50,7 +47,6 @@ export async function GET() {
           maxMarks: maxMarks
         },
         score: score,
-        percentage: percentage,
         status: status,
         submittedAt: result.submittedAt,
         createdAt: result.createdAt

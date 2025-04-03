@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ensureUploadDirectories } from "./lib/upload-helper";
+import { ensureUploadDirectories } from "../lib/upload-helper";
 
 // Ensure uploads directory exists
 try {

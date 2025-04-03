@@ -1,4 +1,4 @@
-import Navbar from "../components/navbar";
+import Navbar from "../../../components/components/navbar";
 
 export default function StudentLayout({ children }) {
   return (

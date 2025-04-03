@@ -196,16 +196,8 @@ export default function TakeExam({ params }) {
         );
       }
 
-      // Success case
+      // Success case - just redirect to results page
       console.log('Submission successful:', data);
-      alert(`Exam submitted successfully!\n\n` +
-            `Exam: ${data.result.examTitle}\n` +
-            `Subject: ${data.result.subject}\n` +
-            `Score: ${data.result.score}/${data.result.totalMarks}\n` +
-            `Percentage: ${data.result.percentage}%\n` +
-            `Status: ${data.result.status.toUpperCase()}\n\n` +
-            `Questions Attempted: ${data.result.answeredQuestions}/${data.result.totalQuestions}`);
-      
       router.push('/student/results');
 
     } catch (error) {
@@ -219,10 +211,9 @@ export default function TakeExam({ params }) {
         answers: answers
       });
 
-      // Set a user-friendly error message
+      // Set a user-friendly error message but don't show alert
       const errorMessage = error.message || 'An unexpected error occurred during submission';
       setError(errorMessage);
-      alert(`Failed to submit exam: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
       setShowSubmitModal(false);

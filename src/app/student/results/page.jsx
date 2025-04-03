@@ -59,13 +59,12 @@ export default function StudentResults() {
   // Calculate statistics
   const totalExams = results.length;
   const passedExams = results.filter(r => r.status === 'passed').length;
-  const averageScore = results.reduce((sum, r) => sum + r.percentage, 0) / totalExams || 0;
 
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">My Exam Results</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Exams</CardTitle>
@@ -85,16 +84,6 @@ export default function StudentResults() {
             <div className="text-2xl font-bold">{passedExams}</div>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Average Score</CardTitle>
-            <Award className="h-4 w-4 text-blue-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{averageScore.toFixed(1)}%</div>
-          </CardContent>
-        </Card>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -104,7 +93,6 @@ export default function StudentResults() {
               <TableHead>Exam</TableHead>
               <TableHead>Subject</TableHead>
               <TableHead>Score</TableHead>
-              <TableHead>Percentage</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
             </TableRow>
@@ -115,7 +103,6 @@ export default function StudentResults() {
                 <TableCell className="font-medium">{result.examId.title}</TableCell>
                 <TableCell>{result.examId.subject}</TableCell>
                 <TableCell>{result.score}/{result.examId.maxMarks}</TableCell>
-                <TableCell>{result.percentage.toFixed(1)}%</TableCell>
                 <TableCell>
                   <Badge 
                     variant={

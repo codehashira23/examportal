@@ -34,24 +34,20 @@ export default function StudentDashboard() {
       const response = await fetch('/api/student/exams/recent');
       const data = await response.json();
       if (response.ok) {
-        // Process exam data to calculate correct percentages and pass/fail status
+        // Process exam data to determine pass/fail status
         const processedExams = data.map(exam => {
           // Extract score and max marks (ensure they're numbers)
           const score = Number(exam.score) || 0;
           const maxMarks = Number(exam.maxMarks) || 100;
           
-          // Calculate percentage (0-100 scale)
-          const percentage = maxMarks > 0 ? Math.round((score / maxMarks) * 100) : 0;
-          
           // Determine pass/fail status (typically 40% is passing, but can adjust)
-          const passingThreshold = 40; // Can be adjusted based on requirements
-          const isPassed = percentage >= passingThreshold;
+          const passingThreshold = 0.4; // 40% passing threshold
+          const isPassed = score >= (maxMarks * passingThreshold);
           
           return {
             ...exam,
             score: score, // Keep the original score
             maxMarks: maxMarks, // Keep the max marks
-            percentage: percentage, // Add calculated percentage
             status: isPassed ? 'Passed' : 'Failed'
           };
         });
@@ -143,7 +139,6 @@ export default function StudentDashboard() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 </tr>
               </thead>
@@ -161,9 +156,6 @@ export default function StudentDashboard() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">{exam.score}/{exam.maxMarks}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{exam.percentage}%</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${

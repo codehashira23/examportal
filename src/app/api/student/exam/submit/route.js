@@ -58,9 +58,10 @@ export async function POST(request) {
 
     // Process each question
     exam.questions.forEach((question) => {
-      // Find matching answer by question text instead of ID
-      const matchingAnswer = Object.entries(answers).find(([_, answer]) => {
-        const userAnswerNum = parseInt(answer);
+      const userAnswer = answers[question._id.toString()];
+      
+      if (userAnswer !== undefined) {
+        const userAnswerNum = parseInt(userAnswer);
         const correctAnswerNum = parseInt(question.correctOption);
         
         console.log('Answer comparison:', {
@@ -74,10 +75,8 @@ export async function POST(request) {
         if (userAnswerNum === correctAnswerNum) {
           score += question.marks;
           answeredQuestions++;
-          return true;
         }
-        return false;
-      });
+      }
     });
 
     // Calculate percentage based on total possible marks
