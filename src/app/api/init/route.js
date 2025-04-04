@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { ensureUploadDirectories } from '../../lib/upload-helper';
+import { ensureUploadDirectories } from '../../../lib/upload-helper';
 import { mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
