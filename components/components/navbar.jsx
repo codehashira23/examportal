@@ -10,10 +10,10 @@ export default function Navbar({ role }) {
 
   return (
     <header className="p-4 dark:bg-gray-800 dark:text-gray-100 bg-green-700 text-white">
-      <div className="container flex justify-between h-16 mx-auto">
+      <div className="container flex justify-between h-8 mx-auto">
         {/* Logo / Home Link */}
         <Link href="/" className="flex items-center p-2">
-        <Image src="/favicon.ico" alt="logo" width={30} height={30} />
+        <Image src="/logo.png" alt="logo" width={30} height={30} />
 
           <span className="text-2xl font-bold tracking-wide ml-2">Exam Portal</span>
         </Link>
@@ -121,7 +121,7 @@ export default function Navbar({ role }) {
                 <li><Link href="/student/profile" className="block px-4 py-2 hover:bg-green-600">Profile</Link></li>
               </>
             )}
-            <li className="px-4 py-2">
+            <li className="px-4 py-2 ">
               <LogoutButton />
             </li>
           </ul>

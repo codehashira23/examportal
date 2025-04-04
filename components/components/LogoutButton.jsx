@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { IoLogOutOutline } from "react-icons/io5";
+
 
 export default function LogoutButton() {
   const router = useRouter();
@@ -11,9 +13,10 @@ export default function LogoutButton() {
   }
 
   return (
-    <button onClick={handleLogout} className="bg-red-600 text-white px-6 py-3 rounded-lg shadow-md transition-all duration-300 hover:bg-red-700 hover:scale-105 active:scale-95"
+    <button onClick={handleLogout} className="bg-green-700 text-white px-3 py-2 rounded-lg shadow-md transition-all duration-300 hover:bg-red-700 hover:scale-105 active:scale-95"
 >
-      Logout
+      <IoLogOutOutline className="size-5 "  />
+    
     </button>
   );
 }

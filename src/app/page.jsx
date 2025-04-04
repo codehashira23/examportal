@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { AnimatePresence, motion } from "framer-motion";
 import { CanvasRevealEffect } from '../../components/ui/canvas-reveal-effect';
 
@@ -46,8 +47,16 @@ export default function Home() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 py-10 flex flex-col lg:flex-row items-center justify-between gap-8">
         {/* Left Side: Welcome Text */}
         <div className="flex-1 text-center lg:text-left">
+
+          <div className='sm:hidden lm:block flex justify-center items-center'>
+            <Image src="/logo.png" alt="logo" width={30} height={30} />
+          </div>
           <h1 className="text-5xl font-extrabold text-white mb-6 leading-tight">
-            Welcome to the<br /> Exam Portal
+            Welcome to the<br /> <span className='flex items-center gap-2
+            sm:ml-0 lm: ml-9'>Exam Portal
+            <Image className='hidden sm:block' src="/logo.png" alt="logo" width={30} height={30} />
+            </span>
+          
           </h1>
           <p className="text-xl text-white/80 mb-8 max-w-xl">
             A comprehensive platform for conducting online examinations with advanced monitoring and result analysis
@@ -55,19 +64,19 @@ export default function Home() {
           
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
             <Link 
-              href="/login" 
+              href="/auth" 
               className="px-6 py-3 text-lg font-semibold bg-blue-600 text-white rounded-lg shadow-md transition-all hover:bg-blue-700 hover:scale-105"
             >
               Admin Login
             </Link>
             <Link 
-              href="/login" 
+              href="/auth" 
               className="px-6 py-3 text-lg font-semibold bg-green-600 text-white rounded-lg shadow-md transition-all hover:bg-green-700 hover:scale-105"
             >
               Student Login
             </Link>
             <Link 
-              href="/register" 
+              href="/auth" 
               className="px-6 py-3 text-lg font-semibold bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg shadow-md transition-all hover:bg-white/20 hover:scale-105"
             >
               Register
