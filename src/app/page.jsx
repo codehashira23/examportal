@@ -81,6 +81,12 @@ export default function Home() {
             >
               Register
             </Link>
+            <Link 
+              href="/developers" 
+              className="px-6 py-3 text-lg font-semibold bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg shadow-md transition-all hover:bg-white/20 hover:scale-105"
+            >
+              developers
+            </Link>
           </div>
         </div>
         
