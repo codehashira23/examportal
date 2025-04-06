@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { dbConnect } from '../../../../lib/dbConnect';  
 import Exam from '../../../model/Exam';
+import mongoose from 'mongoose';
 
 // GET /api/admin/exams - List all exams
 export async function GET() {
@@ -89,6 +90,12 @@ export async function POST(request) {
           { status: 400 }
         );
       }
+      
+      // Ensure correctOption is valid
+      if (question.correctOption < 0 || question.correctOption >= question.options.length) {
+        console.log(`Validation failed: Invalid correctOption for question at index ${i}`);
+        question.correctOption = 0; // Set default to first option
+      }
     }
 
     // Calculate total marks from questions
@@ -107,16 +114,86 @@ export async function POST(request) {
       );
     }
 
-    // Create the exam using Mongoose model
-    const exam = new Exam(examData);
-    await exam.save();
+    // Ensure scheduled property is set
+    if (typeof examData.scheduled !== 'boolean') {
+      examData.scheduled = false;
+    }
+    
+    // Ensure scheduledAt is set
+    if (!examData.scheduledAt) {
+      examData.scheduledAt = null;
+    }
 
-    console.log('Exam created successfully:', exam);
+    // Convert createdBy to ObjectId if it's a string
+    if (typeof examData.createdBy === 'string') {
+      try {
+        examData.createdBy = new mongoose.Types.ObjectId(examData.createdBy);
+      } catch (error) {
+        console.error('Error converting createdBy to ObjectId:', error);
+        return NextResponse.json(
+          { 
+            error: 'Invalid createdBy format',
+            details: error.message
+          },
+          { status: 400 }
+        );
+      }
+    }
 
-    return NextResponse.json({
-      message: 'Exam created successfully',
-      examId: exam._id
-    }, { status: 201 });
+    try {
+      // Create the exam using Mongoose model
+      console.log('Creating exam document with data:', JSON.stringify({
+        title: examData.title,
+        subject: examData.subject,
+        maxMarks: examData.maxMarks,
+        questionCount: examData.questions.length
+      }));
+      
+      const exam = new Exam(examData);
+      await exam.save();
+      
+      console.log('Exam created successfully:', exam._id);
+
+      return NextResponse.json({
+        message: 'Exam created successfully',
+        examId: exam._id
+      }, { status: 201 });
+    } catch (saveError) {
+      console.error('Detailed save error:', {
+        message: saveError.message,
+        name: saveError.name,
+        code: saveError.code,
+        keyPattern: saveError.keyPattern,
+        keyValue: saveError.keyValue,
+        stringified: JSON.stringify(saveError, Object.getOwnPropertyNames(saveError))
+      });
+      
+      // Check for validation errors
+      if (saveError.name === 'ValidationError') {
+        const validationErrors = {};
+        
+        // Extract validation error details
+        for (const field in saveError.errors) {
+          validationErrors[field] = saveError.errors[field].message;
+        }
+        
+        return NextResponse.json(
+          { 
+            error: 'Validation error',
+            details: validationErrors
+          },
+          { status: 400 }
+        );
+      }
+      
+      return NextResponse.json(
+        { 
+          error: 'Database error saving exam',
+          details: saveError.message
+        },
+        { status: 500 }
+      );
+    }
   } catch (error) {
     console.error('Detailed error creating exam:', {
       message: error.message,

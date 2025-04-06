@@ -126,12 +126,12 @@ export default function ManageExams() {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Manage Exams</h1>
-        <button 
+        <Link 
+          href="/admin/exams/create"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => router.push('/admin/exams/create')}
         >
           Create New Exam
-        </button>
+        </Link>
       </div>
       
       {loading ? (
