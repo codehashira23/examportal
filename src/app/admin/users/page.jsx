@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { CanvasRevealEffect } from '../../../../components/ui/canvas-reveal-effect';
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -66,16 +67,17 @@ export default function ManageUsers() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Manage Users</h1>
-        <div className="relative">
+
+    <div className="container mx-auto px-4 py-6 sm:py-8 max-w-7xl">  
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Manage Users</h1>
+        <div className="w-full sm:w-auto">
           <input
             type="text"
             placeholder="Search users..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
@@ -86,7 +88,8 @@ export default function ManageUsers() {
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      {/* Desktop Table View (hidden on small screens) */}
+      <div className="hidden sm:block bg-white rounded-lg shadow overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -130,25 +133,65 @@ export default function ManageUsers() {
           </tbody>
         </table>
       </div>
+      
+      {/* Mobile Card View (shown only on small screens) */}
+      <div className="sm:hidden space-y-4">
+        {filteredUsers.map((user) => (
+          <div key={user._id} className="bg-white rounded-lg shadow p-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">{user.name}</h3>
+                <p className="text-sm text-gray-500 mt-1">{user.email}</p>
+                <div className="mt-2">
+                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
+                  }`}>
+                    {user.role}
+                  </span>
+                </div>
+              </div>
+              <div>
+                {user.role !== 'admin' && (
+                  <button
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setShowDeleteModal(true);
+                    }}
+                    className="text-red-600 hover:text-red-900 text-sm font-medium"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+        
+        {filteredUsers.length === 0 && (
+          <div className="bg-white rounded-lg shadow p-4 text-center text-gray-500">
+            No users found
+          </div>
+        )}
+      </div>
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
-            <p className="mb-4">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h2 className="text-lg sm:text-xl font-bold mb-4">Confirm Delete</h2>
+            <p className="mb-4 text-sm sm:text-base">
               Are you sure you want to delete {selectedUser?.name}? This action is irreversible.
             </p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm sm:text-base"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDeleteUser(selectedUser._id)}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm sm:text-base"
               >
                 Delete
               </button>

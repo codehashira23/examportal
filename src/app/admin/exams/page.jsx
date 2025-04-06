@@ -200,11 +200,6 @@ export default function ManageExams() {
                           <span>{exam.scheduled ? 'Unschedule' : 'Schedule'}</span>
                         )}
                       </button>
-                      <Link href={`/admin/exams/${exam._id}/edit`}>
-                        <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs">
-                          Edit
-                        </button>
-                      </Link>
                       <button 
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs"
                         onClick={() => handleDeleteExam(exam._id)}
